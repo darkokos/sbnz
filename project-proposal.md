@@ -4,8 +4,8 @@
 
 ### Članovi tima
 
-* Dragoslav Tamindžija - SV47/2021
-* Darko Svilar - SV50/2021
+- Dragoslav Tamindžija - SV47/2021
+- Darko Svilar - SV50/2021
 
 ### Motivacija
 
@@ -22,66 +22,112 @@ Naše rešenje bi bilo celovito, na nivou domaćinstva, i nudilo bi adaptibilno 
 Problem koje naše softversko rešenje nastoji da reši je optimizacija potrošnje električne energije u okviru kućnog IoT sistema, u zavisnosti od uslova kao što su tarifa potrošnje električne energije, vremenski uslovi, prisustvo ljudi u domaćinstvu i kompleksnih uslova koji se stvaraju kao rezultat interakcije komponentata smart home sistema.
 
 Neka od postojećih konkurentih sistema i njihovi opisi su:
-* Nest - Smart termostat. Mana je što upravlja samo grejnim i rashladnim uređajima u domaćinstvu.
-* EcoBee - Slično kao Nest...
-* Samsung SmartThings - Samsungovo rešenje za upravljanje samo onim home IoT uređajima koje su oni proizveli.
+
+- Nest - Smart termostat. Mana je što upravlja samo grejnim i rashladnim uređajima u domaćinstvu.
+- EcoBee - Slično kao Nest...
+- Samsung SmartThings - Samsungovo rešenje za upravljanje samo onim home IoT uređajima koje su oni proizveli.
 
 Dosadašnja akademska istraživanja pokazuju da je, u proseku, moguće smanjiti potrošnju 15-30% kroz inteligentno upravljanje uređajima u domaćinstvu.
 
 Neke od prednosti našeg rešenja u odnosu na ostala su:
-* Holistički pristup softverskom rešenju - Optimizacija potrošnje energije se vrši na nivou celog domaćinstva, sa osvrtom na interakcije uređaja unutar sistema.
-* Dinamička adaptacija - Sistem ima sposobnost da se prilagodi promenama koje se dešavaju u realnom vremenu.
-* Proširivost - Mogućnost dodavanja novih uređaja u sistem i novih pravila u rule engine.
+
+- Holistički pristup softverskom rešenju - Optimizacija potrošnje energije se vrši na nivou celog domaćinstva, sa osvrtom na interakcije uređaja unutar sistema.
+- Dinamička adaptacija - Sistem ima sposobnost da se prilagodi promenama koje se dešavaju u realnom vremenu.
+- Proširivost - Mogućnost dodavanja novih uređaja u sistem i novih pravila u rule engine.
 
 ### Ulazi u sistem
 
 Ulazni podaci u sistem se dele na podatke koje strimuju senzori i spoljne podatke unete u sistem.
 
 Podaci koje strimuju senzori mogu biti:
-* Temperatura
-* Vlažnost vazduha
-* Osvetljenost
-* Prisustvo ljudi u domaćinstvu
-* Zagađenost vazduha
-* Stanje rezervnih solarnih baterija (koliko je napunjena)
+
+- Temperatura
+- Vlažnost vazduha
+- Osvetljenost
+- Prisustvo ljudi u domaćinstvu
+- Zagađenost vazduha
+- Stanje rezervnih solarnih baterija (koliko je napunjena)
 
 Spoljni podaci uneti u sistem su:
-* Trenutno stanje rada uređaja (uključen/isključen)
-* Status baterije uređaja koji se pune
-* Potrošnja uređaja
-* Tarifa potrošnje električne energije
+
+- Trenutno stanje rada uređaja (uključen/isključen)
+- Status baterije uređaja koji se pune
+- Potrošnja uređaja
+- Tarifa potrošnje električne energije
 
 ### Izlazi iz sistema
 
 Izlazi iz sistema bi bili:
-* Uključivanje/Isključivanje uređaja
-* Kontrola rada podesivih uređaja (intenzitet, boje...)
-* Kontrola vremena rada intenzivnih potrošača
-* Prebacivanje na rezervno napajanje
+
+- Uključivanje/Isključivanje uređaja
+- Kontrola rada podesivih uređaja (intenzitet, boje...)
+- Kontrola vremena rada intenzivnih potrošača
+- Prebacivanje na rezervno napajanje
 
 ### Baza znanja
 
 Baza znanja sistema se sastoji iz više skupova pravila.
 
 1. Pravila za optimizaciju potrošnje:
+
 ```
 when cena_energije == visoka_cena && prisustvo_ukucana == false
 then
     smanji_grejanje && iskljuci_uređaje
 ```
 
+```
+when cena_energije == visoka_cena && prisustvo_ukucana == true
+then
+    blago_smanji_grejanje
+```
+
+```
+when cena_energije == niska_cena && prisustvo_ukucana == false
+then
+	// Ves masina, punjac za elektricni auto, itd...
+	ukljuci_vremenski_intenzivne_potrosace
+```
+
+```
+when cena_energije == niska_cena && prisustvo_ukucana == true
+then
+	ukljuci_sve_uredjaje && pojacaj_rad_uredjaja
+```
+
 2. Pravila za upravljanje rezervnim izvorima energije:
+
 ```
 when kapacitet_solarne_baterije > 80 && solarna_proizvodnja > trenutna_potrosnja
 then
     prebaci_potrosnju_na_rezerve
 ```
 
-3. Pravila zasnovana na profilima potrošnje:
 ```
-when profil == "Nocni režim"
+when kapacitet_solarne_baterije < 30
+then
+	prebaci_potrosnju_na_mrezu
+```
+
+3. Pravila zasnovana na profilima potrošnje:
+
+```
+when profil == "Nocni rezim"
 then
     aktiviraj_intenzivne_potrosace
+```
+
+```
+when profil == "Stednja"
+then
+	deaktiviraj_intenzivne_potrosace
+	smanji_intenzitet_rada_potrosaca
+```
+
+```
+when profil == "Balansiran"
+then
+	usrednji_rad_potrosaca
 ```
 
 #### Popunjavanje baze znanja
@@ -99,14 +145,16 @@ Takođe, sistem može reagovati na promene u okruženju, inicirane od strane kor
 ### Primer rezonovanja
 
 Scenario je da je radni dan, nema nikoga u domaćinstvu i aktivna je visoka tarifa potrošnje električne energije. O domaćinstvu je poznato sledeće:
-* Temperatura - 22°C
-* Cena/kWh - 18din
-* Solarna proizvodnja - 3.2kW
-* Potrošnja - 1.8kW
+
+- Temperatura - 22°C
+- Cena/kWh - 18din
+- Solarna proizvodnja - 3.2kW
+- Potrošnja - 1.8kW
 
 #### Primer Forward Chaining-a:
 
 Korak 1:
+
 ```
 when prisustvo_ukucana == false && visoka_tarifa == true
 then
@@ -118,6 +166,7 @@ then
 ```
 
 Korak 2:
+
 ```
 when profil == "Stednja" && temperatura > sobna_temperatura
 then
@@ -129,6 +178,7 @@ then
 ```
 
 Korak 3:
+
 ```
 when temperatura < sobna_temperatura - 2 && profil == "Dolazak sa posla"
 then
@@ -156,11 +206,24 @@ then
 	System.out.println("Summed power generated is" + $total);
 ```
 
-#### Primeri CEP-a (Complex Event Processing)
+#### Primer CEP-a (Complex Event Processing)
 
-CEP se u ovom sistemu može iskoristiti da bi tokom naglih promena vremenskih uslova, moglao zaključiti da će u budućnosti biti dostupna veća količina solarne energije, te na osnovu toga olakšati kriterijume potrošnje.
+CEP se u ovom sistemu može iskoristiti da bi se tokom naglih promena vremenskih uslova moglo zaključiti da će u budućnosti biti dostupna veća količina solarne energije, te na osnovu toga olakšati kriterijume potrošnje.
 
-Takođe, moguće je i ekstrapolirati nove profile potrošnje na osnovu šablona prisustva ljudi u domaćinstvu u prošlosti.
+```
+when
+	weatherReading1: WeatherReading(cloudCover > 80, $timestamp1: timestamp)
+	weatherReading2: WeatherReading(cloudCover < 60, $timestamp2: timestamp)
+	weatherReading3: WeatherReading(cloudCover < 30, $timestamp3: timestamp)
+
+	// Neka se za naglu promenu računa promena koja se dogodi u toku 2 sata
+	$timestamp2 > $timestamp1 &&
+	$timestamp3 > $timestamp2 &&
+	$timestamp3 - $timestamp1 <= 2 * 60 * 60 * 1000
+then
+	prebaci_profil_potrosnje_na_balansirani
+	prebaci_potrosnju_na_rezerve
+```
 
 #### Primer Template-a
 
@@ -172,6 +235,58 @@ Na primer, tokom kreiranja noćnog režima rada, korisnik bi definisao da želi 
 
 #### Primer Backward Chaining-a
 
-Kako je cilj našeg sistema da što više uštedi električnu energiju, ali da kućni IoT sistem i dalje ostane visoko efikasan, primer Backward Chaining-a bi mogao biti da se za određeni naredni period pronađe energetski najefikasnije rešenje zagrevanja ili hlađenja sobe, kombinujući električnu energiju mreže i solarnu energiju akumuliranu u bateriji.
+Kako je cilj našeg sistema da što više uštedi električnu energiju, ali da kućni IoT sistem i dalje ostane visoko efikasan, primer Backward Chaining-a bi mogao biti da se za određeni naredni period pronađe energetski efikasno rešenje zagrevanja ili hlađenja sobe, kombinujući električnu energiju mreže i solarnu energiju akumuliranu u bateriji.
 
-Cilj bi bio obezbediti da do određenog vremena u domaćinstvu bude postignuta određena temperatura, ali, to postići maksimizovanjem potrošnje energije akumulirane u bateriji.
+Cilj bi bio obezbediti da u domaćinstvu bude postignuta određena temperatura, ali, to postići maksimizovanjem potrošnje energije akumulirane u bateriji.
+
+Konkretno, algoritmu bi se zadala lista svih uređaja čija je svrha grejanje, to jest, hlađenje. Pored toga, zadavali bi se i temperaturni cilj, dozvoljeni budžet baterija i dozvoljeni budžet mreže (u svrhu ograničenja potrošnje, zbog energetske efikasnosti). Algoritam bi uvek preferirao napajanje sa baterije, pre nego što krene da troši resurse sa mreže.
+
+```
+query canMeetGoal(int targetTemp, List<Device> devices, int batteryBudget, int gridBudget)
+	if targetTemp <= getCurrentTemp()
+		return true;
+
+	if devices.isEmpty()
+		return false;
+
+	for $d in devices:
+		$rest: devices.remove($d);
+		$cons: $d.getConsumption();
+		$effect: $d.getTempEffect();
+
+		if batteryBudget >= $cons &&
+                   canMeetGoal(
+                           targetTemp - $effect,
+                           $rest,
+                           batteryBudget - $cons,
+                           gridBudget
+		   )
+			return true;
+
+		if gridBudget >= $cons &&
+                   canMeetGoal(
+                           targetTemp - $effect,
+                           $rest,
+                           batteryBudget,
+                           gridBudget - $cons
+                   )
+			return true;
+
+		if canMeetGoal(targetTemp, $rest, batteryBudget, gridBudget)
+			return true;
+
+	return false;
+```
+
+```
+when
+	heatingGoal: HeatingGoal(
+		$targetTemp: targetTemp,
+		$availableDevices: plannedDevices,
+		$batteryBudget: batteryBudget,
+		$gridBudget: gridBudget
+	)
+	canMeetGoal($targetTemp, $availableDevices, $batteryBudget, $gridBudget)
+then
+	System.out.println("Goal achievable!")
+```
