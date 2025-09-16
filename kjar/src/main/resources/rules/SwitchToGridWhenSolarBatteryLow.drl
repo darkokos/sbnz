@@ -1,0 +1,13 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.PowerSource
+import com.ftn.sbnz.model.SolarGenerator
+
+rule "when battery lower than 30% switch to grid"
+    when
+        $home: Home(powerSource == PowerSource.RESERVES)
+        $solar: SolarGenerator(currentBatteryCharge < 30.0)
+    then
+        modify($home){setPowerSource(PowerSource.GRID)}
+end
