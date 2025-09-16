@@ -1,0 +1,13 @@
+package rules.smartHome
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.ElectricCar
+import com.ftn.sbnz.model.HomeProfile
+
+rule "when home is connected to the grid stop charging car"
+    when
+        $home: Home( $profile: profile )
+        $car: ElectricCar( $profile == HomeProfile.GRID, isCharging == true )
+    then
+        modify($car){$car.setIsCharging(false)}
+ end
