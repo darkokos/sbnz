@@ -1,9 +1,6 @@
 package com.ftn.sbnz.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -11,6 +8,7 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @AllArgsConstructor
+@ToString
 public class SolarGenerator implements Serializable {
     // in kWh
     private Double production;
@@ -20,5 +18,4 @@ public class SolarGenerator implements Serializable {
 
     // percentage
     private Double currentBatteryCharge;
-
 }

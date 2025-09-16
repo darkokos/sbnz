@@ -10,9 +10,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @AllArgsConstructor
 public class Home implements Serializable {
-    private HomeProfile profile;
+    private PowerSource powerSource;
 
     // in kWh
     private Double currentConsumption;
 
+    private Integer numberOfPresentResidents;
+    private ConsumptionProfile consumptionProfile;
+    private Double desiredTemp;
 }
