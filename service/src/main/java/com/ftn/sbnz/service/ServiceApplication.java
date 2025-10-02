@@ -1,14 +1,12 @@
 package com.ftn.sbnz.service;
 
 import com.ftn.sbnz.model.*;
-import org.drools.core.event.DefaultAgendaEventListener;
-import org.kie.api.event.rule.AfterMatchFiredEvent;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieScanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -16,28 +14,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ServiceApplication {
 
     @Bean
-    public KieContainer kieContainer() {
+    public KieSession kieSession() {
         KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.newKieContainer(ks.newReleaseId("com.ftn.sbnz", "kjar", "0.0.1-SNAPSHOT"));
-        KieScanner kScanner = ks.newKieScanner(kContainer);
-        kScanner.start(1000);
-        return kContainer;
+        KieContainer kContainer = ks.getKieClasspathContainer();
+        return kContainer.newKieSession("smartHomeRulesKS");
     }
 
 	public static void main(String[] args) {
-		// SpringApplication.run(ServiceApplication.class, args);
+        // TODO: Remove later
+
         KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession kieSession = kContainer.newKieSession("smartHomeRulesKS");
 
-        kieSession.addEventListener(new DefaultAgendaEventListener() {
-            @Override
-            public void afterMatchFired(AfterMatchFiredEvent event) {
-               System.out.println("Fired: " + event.getMatch().getRule().getName());
-            }
-        });
-
-        // init default state
         Home home = new Home(
                 PowerSource.GRID,
                 1000.0,
@@ -46,7 +35,7 @@ public class ServiceApplication {
                 30.0
         );
         SolarGenerator sg = new SolarGenerator(500.0, 100.0);
-        ElectricCar ec = new ElectricCar(false);
+        ElectricCarCharger ec = new ElectricCarCharger(false);
 
         FactHandle homeHandle = kieSession.insert(home);
         FactHandle solarHandle = kieSession.insert(sg);
@@ -90,6 +79,7 @@ public class ServiceApplication {
         System.out.println("Solar state: " + sg);
         System.out.println("Car state: " + ec);
         System.out.println();
-	}
 
+        SpringApplication.run(ServiceApplication.class, args);
+	}
 }

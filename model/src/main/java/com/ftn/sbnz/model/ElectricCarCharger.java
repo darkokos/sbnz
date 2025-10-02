@@ -9,6 +9,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @AllArgsConstructor
 @ToString
-public class ElectricCar implements Serializable {
+public class ElectricCarCharger implements Serializable {
     private Boolean isCharging;
 }
