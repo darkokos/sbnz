@@ -82,60 +82,72 @@ public class HomeStateRepository {
     public void setAirConditioner(AirConditioner airConditioner) {
         this.airConditioner = airConditioner;
         this.kieSession.update(airConditionerHandle, airConditioner);
+        this.kieSession.fireAllRules();
     }
 
     public void setBoiler(Boiler boiler) {
         this.boiler = boiler;
         this.kieSession.update(boilerHandle, boiler);
+        this.kieSession.fireAllRules();
     }
 
     public void setElectricCarCharger(ElectricCarCharger electricCarCharger) {
         this.electricCarCharger = electricCarCharger;
         this.kieSession.update(electricCarChargerHandle, electricCarCharger);
+        this.kieSession.fireAllRules();
     }
 
     public void setElectricityPriceList(ElectricityPriceList electricityPriceList) {
         this.electricityPriceList = electricityPriceList;
         this.kieSession.update(electricityPriceListHandle, electricityPriceList);
+        this.kieSession.fireAllRules();
     }
 
     public void setFloorHeater(FloorHeater floorHeater) {
         this.floorHeater = floorHeater;
         this.kieSession.update(floorHeaterHandle, floorHeater);
+        this.kieSession.fireAllRules();
     }
 
     public void setHome(Home home) {
         this.home = home;
         this.kieSession.update(homeHandle, home);
+        this.kieSession.fireAllRules();
     }
 
     public void setLights(Lights lights) {
         this.lights = lights;
         this.kieSession.update(lightsHandle, lights);
+        this.kieSession.fireAllRules();
     }
 
     public void setRadiator(Radiator radiator) {
         this.radiator = radiator;
         this.kieSession.update(radiatorHandle, radiator);
+        this.kieSession.fireAllRules();
     }
 
     public void setSolarGenerator(SolarGenerator solarGenerator) {
         this.solarGenerator = solarGenerator;
         this.kieSession.update(solarGeneratorHandle, solarGenerator);
+        this.kieSession.fireAllRules();
     }
 
     public void setSpaceHeater(SpaceHeater spaceHeater) {
         this.spaceHeater = spaceHeater;
         this.kieSession.update(spaceHeaterHandle, spaceHeater);
+        this.kieSession.fireAllRules();
     }
 
     public void setWashingMachine(WashingMachine washingMachine) {
         this.washingMachine = washingMachine;
         this.kieSession.update(washingMachineHandle, washingMachine);
+        this.kieSession.fireAllRules();
     }
 
     public void setWindowBlinds(WindowBlinds windowBlinds) {
         this.windowBlinds = windowBlinds;
         this.kieSession.update(windowBlindsHandle, windowBlinds);
+        this.kieSession.fireAllRules();
     }
 }
