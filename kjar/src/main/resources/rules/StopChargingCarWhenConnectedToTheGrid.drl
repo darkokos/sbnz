@@ -1,13 +1,13 @@
 package rules
 
 import com.ftn.sbnz.model.Home
-import com.ftn.sbnz.model.ElectricCar
+import com.ftn.sbnz.model.ElectricCarCharger
 import com.ftn.sbnz.model.PowerSource
 
 rule "when home is connected to the grid stop charging car"
     when
         $home: Home(powerSource == PowerSource.GRID)
-        $car: ElectricCar(isCharging == true)
+        $car: ElectricCarCharger(isCharging == true)
     then
         modify($car) {
             setIsCharging(false)

@@ -13,9 +13,6 @@ public class SolarGenerator implements Serializable {
     // in kWh
     private Double production;
 
-    // mAh
-    public static Double totalBatteryCapacity = 1000.0;
-
     // percentage
     private Double currentBatteryCharge;
 }
