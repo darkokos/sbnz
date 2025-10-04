@@ -100,8 +100,8 @@ export default function MiniDrawer() {
     },
     {
       icon: <CloudIcon color="primary" />,
-      name: "Weather Readings",
-      linkPath: "/weather",
+      name: "Solar Savings",
+      linkPath: "/savings",
     },
     {
       icon: <AcUnitIcon color="primary" />,
