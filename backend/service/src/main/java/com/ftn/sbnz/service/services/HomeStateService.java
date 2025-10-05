@@ -79,7 +79,7 @@ public class HomeStateService {
 
     public RecommendationDto updateElectricCarChargerState(ElectricCarChargerDto electricCarChargerDto) {
         ElectricCarCharger charger = this.homeStateRepository.getElectricCarCharger();
-        charger.setIsCharging(electricCarChargerDto.getIsCharging());
+        charger.setIsCharging(electricCarChargerDto.isCharging());
         this.homeStateRepository.setElectricCarCharger(charger);
         return getRecommendation();
     }
