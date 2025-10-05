@@ -21,6 +21,7 @@ import DishWasherCard from "./components/DishWasherCard";
 import DryerCard from "./components/DryerCard";
 import TimeReadingCard from "./components/TimeReadingCard";
 import { useSnackbar } from "notistack";
+import WeatherReadingCard from "./components/WeatherReadingCard";
 
 export default function Home() {
   const { enqueueSnackbar } = useSnackbar();
@@ -73,6 +74,7 @@ export default function Home() {
             <SpaceHeaterCard onResultHook={setRecommendations} />
             <TimeReadingCard onResultHook={setRecommendations} />
             <WashingMachineCard onResultHook={setRecommendations} />
+            <WeatherReadingCard onResultHook={setRecommendations} />
           </Masonry>
         </Grid>
         <Grid container size={1} justifyContent={"center"}>
