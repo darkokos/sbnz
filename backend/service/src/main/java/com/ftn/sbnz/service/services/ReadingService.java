@@ -34,7 +34,7 @@ public class ReadingService {
         recommendationDto.setLightBrightness(this.homeStateRepository.getLights().getBrightness());
         recommendationDto.setBoilerOn(this.homeStateRepository.getBoiler().isOn());
         recommendationDto.setDryerOn(this.homeStateRepository.getDryer().isOn());
-        recommendationDto.setAirPurifierOn(this.homeStateRepository.getAirConditioner().isOn());
+        recommendationDto.setAirPurifierOn(this.homeStateRepository.getAirPurifier().isOn());
         recommendationDto.setDishWasherOn(this.homeStateRepository.getDishWasher().isOn());
         return recommendationDto;
     }
