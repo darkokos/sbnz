@@ -10,7 +10,7 @@ salience 100
         $home: Home(consumptionProfile != consumptionProfile.NIGHTLY)
         $time: TimeReading($hour: hour)
         $lights: Lights()
-        $brightness: Double() from ($lights.suggestedBrightnessForTheHourOfTheDay($time))
+        $brightness: Integer() from ($lights.suggestedBrightnessForTheHourOfTheDay($hour))
     then
         modify($lights){setBrightness($brightness)}
 end

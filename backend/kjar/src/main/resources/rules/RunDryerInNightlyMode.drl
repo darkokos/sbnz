@@ -6,7 +6,7 @@ import com.ftn.sbnz.model.Dryer
 rule "run dryer in nightly mode"
     when
         $home: Home(consumptionProfile == consumptionProfile.NIGHTLY)
-        $dryer: Dryer(isLoaded == true)
+        $dryer: Dryer(loaded == true)
     then
         modify($dryer){setOn(true)}
 end

@@ -17,27 +17,27 @@ public class ReadingsController {
         this.readingService = readingService;
     }
 
-    @PutMapping("/air-quality")
+    @PutMapping("/air-quality-reading")
     public ResponseEntity<RecommendationDto> putAirQualityReading(@RequestBody AirQualityReadingDTO readingDTO) {
         return new ResponseEntity<>(readingService.updateAirQualityReading(readingDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/time")
+    @PutMapping("/time-reading")
     public ResponseEntity<RecommendationDto> putTimeReading(@RequestBody TimeReadingDTO readingDTO) {
         return new ResponseEntity<>(readingService.updateTimeReading(readingDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/solar-generator")
+    @PutMapping("/solar-generator-reading")
     public ResponseEntity<RecommendationDto> putSolarGeneratorReading(@RequestBody SolarGeneratorReadingDTO readingDTO) {
         return new ResponseEntity<>(readingService.updateSolarGeneratorReading(readingDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/temperature")
+    @PutMapping("/temperature-reading")
     public ResponseEntity<RecommendationDto> putTemperatureReading(@RequestBody TemperatureReadingDTO readingDTO) {
         return new ResponseEntity<>(readingService.updateTemperatureReading(readingDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/weather")
+    @PutMapping("/weather-reading")
     public ResponseEntity<RecommendationDto> putWeatherReading(@RequestBody WeatherReadingDTO readingDTO) {
         return new ResponseEntity<>(readingService.updateWeatherReading(readingDTO), HttpStatus.OK);
     }
