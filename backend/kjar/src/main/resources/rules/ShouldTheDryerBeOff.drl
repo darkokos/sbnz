@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.Dryer
+
+rule "should the dryer be off"
+    when
+        $home: Home(consumptionProfile != consumptionProfile.NIGHTLY)
+        $dryer: Dryer()
+    then
+        modify($dryer){setOn(false)}
+end

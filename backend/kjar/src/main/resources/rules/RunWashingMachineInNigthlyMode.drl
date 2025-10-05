@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.WashingMachine
+
+rule "run washing machine in nightly mode"
+    when
+        $home: Home(consumptionProfile == consumptionProfile.NIGHTLY)
+        $washingMachine: WashingMachine(isLoaded == true)
+    then
+        modify($washingMachine){setOn(true)}
+end

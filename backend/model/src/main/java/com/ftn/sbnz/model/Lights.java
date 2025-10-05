@@ -8,5 +8,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Lights {
-    private boolean areOn;
+    // 0 - 100
+    private int brightness;
+
+    public int suggestedBrightnessForTheHourOfTheDay(int hour) {
+        if (hour >= 0 && hour <= 12) {
+            return (int) (hour * (100.0/12.0));
+        } else {
+            return (int) ((24 - hour) * (100.0/12.0));
+        }
+    }
 }

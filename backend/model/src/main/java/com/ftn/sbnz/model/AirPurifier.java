@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class WindowBlinds {
-    private boolean isUp;
+public class AirPurifier {
+    private boolean isOn;
 }

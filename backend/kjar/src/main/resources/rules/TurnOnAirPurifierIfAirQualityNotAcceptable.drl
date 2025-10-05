@@ -1,0 +1,15 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.AirPurifier
+import com.ftn.sbnz.model.AirQualityReading
+
+rule "turn on air purifier if air quality not acceptable"
+salience 100
+    when
+        $home: Home(consumptionProfile == consumptionProfile.NIGHTLY)
+        $reading: AirQualityReading(humidity < 30 || humidity > 50 || airQuality < 80)
+        $purifier: AirPurifier()
+    then
+        modify($purifier){setOn(true)}
+end

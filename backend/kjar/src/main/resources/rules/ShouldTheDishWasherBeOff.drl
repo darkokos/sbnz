@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.DishWasher
+
+rule "should the dish washer be off"
+    when
+        $home: Home(consumptionProfile != consumptionProfile.NIGHTLY)
+        $dishWasher: DishWasher()
+    then
+        modify($dishWasher){setOn(false)}
+end

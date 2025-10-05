@@ -1,0 +1,24 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.AirConditioner
+import com.ftn.sbnz.model.TemperatureReading
+import com.ftn.sbnz.model.SpaceHeater
+import com.ftn.sbnz.model.Radiator
+import com.ftn.sbnz.model.FloorHeater
+
+rule "turn off climate control if the desired temp has been reached"
+salience 100
+    when
+        $tempReading: TemperatureReading($temp: temperature)
+        $home: Home((desiredTemp == null) || (desiredTemp != null && $temp > desiredTemp * 0.9 && $temp < desiredTemp * 1.1))
+        $ac: AirConditioner()
+        $spaceHeater: SpaceHeater()
+        $radiator: Radiator()
+        $floorHeating: FloorHeater()
+    then
+        modify($ac){setOn(false)}
+        modify($spaceHeater){setOn(false)}
+        modify($radiator){setOn(false)}
+        modify($floorHeating){setOn(false)}
+end

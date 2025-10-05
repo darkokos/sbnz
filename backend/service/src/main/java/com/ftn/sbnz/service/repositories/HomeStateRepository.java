@@ -23,10 +23,6 @@ public class HomeStateRepository {
     @Getter
     private ElectricCarCharger electricCarCharger;
 
-    private final FactHandle electricityPriceListHandle;
-    @Getter
-    private ElectricityPriceList electricityPriceList;
-
     private final FactHandle floorHeaterHandle;
     @Getter
     private FloorHeater floorHeater;
@@ -55,9 +51,25 @@ public class HomeStateRepository {
     @Getter
     private WashingMachine washingMachine;
 
-    private final FactHandle windowBlindsHandle;
+    private final FactHandle airPurifierHandle;
     @Getter
-    private WindowBlinds windowBlinds;
+    private AirPurifier airPurifier;
+
+    private final FactHandle airQualityReadingHandle;
+    @Getter
+    private AirQualityReading airQualityReading;
+
+    private final FactHandle dishWasherHandle;
+    @Getter
+    private DishWasher dishWasher;
+
+    private final FactHandle dryerHandle;
+    @Getter
+    private Dryer dryer;
+
+    private final FactHandle timeReadingHandle;
+    @Getter
+    private TimeReading timeReading;
 
     @Autowired
     public HomeStateRepository(KieSession kieSession) {
@@ -68,7 +80,6 @@ public class HomeStateRepository {
         airConditionerHandle = this.kieSession.insert(airConditioner);
         boilerHandle = this.kieSession.insert(boiler);
         electricCarChargerHandle = this.kieSession.insert(electricCarCharger);
-        electricityPriceListHandle = this.kieSession.insert(electricityPriceList);
         floorHeaterHandle = this.kieSession.insert(floorHeater);
         homeHandle = this.kieSession.insert(home);
         lightsHandle = this.kieSession.insert(lights);
@@ -76,7 +87,11 @@ public class HomeStateRepository {
         solarGeneratorHandle = this.kieSession.insert(solarGenerator);
         spaceHeaterHandle = this.kieSession.insert(spaceHeater);
         washingMachineHandle = this.kieSession.insert(washingMachine);
-        windowBlindsHandle = this.kieSession.insert(windowBlinds);
+        airPurifierHandle = this.kieSession.insert(airPurifier);
+        airQualityReadingHandle = this.kieSession.insert(airQualityReading);
+        dishWasherHandle = this.kieSession.insert(dishWasher);
+        dryerHandle = this.kieSession.insert(dryer);
+        timeReadingHandle = this.kieSession.insert(timeReading);
     }
 
     public void setAirConditioner(AirConditioner airConditioner) {
@@ -94,12 +109,6 @@ public class HomeStateRepository {
     public void setElectricCarCharger(ElectricCarCharger electricCarCharger) {
         this.electricCarCharger = electricCarCharger;
         this.kieSession.update(electricCarChargerHandle, electricCarCharger);
-        this.kieSession.fireAllRules();
-    }
-
-    public void setElectricityPriceList(ElectricityPriceList electricityPriceList) {
-        this.electricityPriceList = electricityPriceList;
-        this.kieSession.update(electricityPriceListHandle, electricityPriceList);
         this.kieSession.fireAllRules();
     }
 
@@ -145,9 +154,33 @@ public class HomeStateRepository {
         this.kieSession.fireAllRules();
     }
 
-    public void setWindowBlinds(WindowBlinds windowBlinds) {
-        this.windowBlinds = windowBlinds;
-        this.kieSession.update(windowBlindsHandle, windowBlinds);
+    public void setAirPurifier(AirPurifier purifier) {
+        this.airPurifier = purifier;
+        this.kieSession.update(airPurifierHandle, airPurifier);
+        this.kieSession.fireAllRules();
+    }
+
+    public void setAirQualityReading(AirQualityReading reading) {
+        this.airQualityReading = reading;
+        this.kieSession.update(airQualityReadingHandle, airQualityReading);
+        this.kieSession.fireAllRules();
+    }
+
+    public void setDishWasher(DishWasher dishWasher) {
+        this.dishWasher = dishWasher;
+        this.kieSession.update(dishWasherHandle, dishWasher);
+        this.kieSession.fireAllRules();
+    }
+
+    public void setDryer(Dryer dryer) {
+        this.dryer = dryer;
+        this.kieSession.update(dryerHandle, dryer);
+        this.kieSession.fireAllRules();
+    }
+
+    public void setTimeReading(TimeReading reading) {
+        this.timeReading = reading;
+        this.kieSession.update(timeReadingHandle, reading);
         this.kieSession.fireAllRules();
     }
 }
