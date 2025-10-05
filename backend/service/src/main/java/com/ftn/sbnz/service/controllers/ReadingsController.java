@@ -28,7 +28,7 @@ public class ReadingsController {
     }
 
     @PutMapping("/solar-generator-reading")
-    public ResponseEntity<RecommendationDto> putSolarGeneratorReading(@RequestBody SolarGeneratorReadingDTO readingDTO) {
+    public ResponseEntity<SavedEnergyDto> putSolarGeneratorReading(@RequestBody SolarGeneratorReadingDTO readingDTO) {
         return new ResponseEntity<>(readingService.updateSolarGeneratorReading(readingDTO), HttpStatus.OK);
     }
 

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class ReadingService {
     private final ReadingRepository readingRepository;
@@ -61,14 +63,15 @@ public class ReadingService {
         return getRecommendation();
     }
 
-    public RecommendationDto updateSolarGeneratorReading(SolarGeneratorReadingDTO readingDTO) {
+    public SavedEnergyDto updateSolarGeneratorReading(SolarGeneratorReadingDTO readingDTO) {
         if (readingDTO.getGeneratedPower() < 0) {
             throw new RestException(HttpStatus.BAD_REQUEST, "Generated power cannot be negative");
         }
-        SolarGeneratorReading solarGeneratorReading = this.readingRepository.getSolarGeneratorReading();
-        solarGeneratorReading.setGeneratedPower(readingDTO.getGeneratedPower());
-        this.readingRepository.setSolarGeneratorReading(solarGeneratorReading);
-        return getRecommendation();
+
+        this.readingRepository.insertSolarGeneratorReading(
+                new SolarGeneratorReading(readingDTO.getGeneratedPower(), new Date())
+        );
+        return new SavedEnergyDto(this.readingRepository.getSavedEnergy().getSavedEnergy());
     }
 
     public RecommendationDto updateTemperatureReading(TemperatureReadingDTO readingDTO) {

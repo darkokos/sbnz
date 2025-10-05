@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
+import java.util.Date;
 
 @Repository
 public class ReadingRepository {
@@ -16,10 +17,6 @@ public class ReadingRepository {
     private final FactHandle airQualityReadingHandle;
     @Getter
     private AirQualityReading airQualityReading;
-
-    private final FactHandle solarGeneratorReadingHandle;
-    @Getter
-    private SolarGeneratorReading solarGeneratorReading;
 
     private final FactHandle temperatureReadingHandle;
     @Getter
@@ -33,21 +30,24 @@ public class ReadingRepository {
     @Getter
     private WeatherReading weatherReading;
 
+    @Getter
+    private final SavedEnergy savedEnergy;
+
     @Autowired
     public ReadingRepository(KieSession kieSession) {
         this.kieSession = kieSession;
 
         airQualityReading = new AirQualityReading(50, 50);
-        solarGeneratorReading = new SolarGeneratorReading(100);
         temperatureReading = new TemperatureReading(20.0);
         timeReading = new TimeReading(LocalTime.now().getHour());
         weatherReading = new WeatherReading(20.0, System.currentTimeMillis());
+        savedEnergy = new SavedEnergy(0);
 
         airQualityReadingHandle = this.kieSession.insert(airQualityReading);
-        solarGeneratorReadingHandle = this.kieSession.insert(solarGeneratorReading);
         temperatureReadingHandle = this.kieSession.insert(temperatureReading);
         timeReadingHandle = this.kieSession.insert(timeReading);
         weatherReadingHandle = this.kieSession.insert(weatherReading);
+        this.kieSession.insert(savedEnergy);
     }
 
     public void setAirQualityReading(AirQualityReading reading) {
@@ -62,9 +62,8 @@ public class ReadingRepository {
         this.kieSession.fireAllRules();
     }
 
-    public void setSolarGeneratorReading(SolarGeneratorReading reading) {
-        this.solarGeneratorReading = reading;
-        this.kieSession.update(solarGeneratorReadingHandle, reading);
+    public void insertSolarGeneratorReading(SolarGeneratorReading reading) {
+        this.kieSession.insert(reading);
         this.kieSession.fireAllRules();
     }
 
