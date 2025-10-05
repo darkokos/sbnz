@@ -1,0 +1,13 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.AirPurifier
+
+rule "should the air purifier be off"
+    when
+        $home: Home((consumptionProfile != consumptionProfile.COMING_HOME && numberOfPresentResidents == 0)
+                    || consumptionProfile == consumptionProfile.ECO)
+        $purifier: AirPurifier()
+    then
+        modify($purifier){setOn(false)}
+end

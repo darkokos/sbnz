@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.Radiator
+
+rule "should the radiator be off"
+    when
+        $home: Home(consumptionProfile != consumptionProfile.COMING_HOME && numberOfPresentResidents == 0)
+        $radiator: Radiator()
+    then
+        modify($radiator){setOn(false)}
+end

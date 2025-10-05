@@ -1,0 +1,13 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.SpaceHeater
+
+rule "should the space heater be off"
+    when
+        $home: Home((consumptionProfile != consumptionProfile.COMING_HOME && numberOfPresentResidents == 0)
+                    || consumptionProfile == consumptionProfile.ECO)
+        $spaceHeater: SpaceHeater()
+    then
+        modify($spaceHeater){setOn(false)}
+end

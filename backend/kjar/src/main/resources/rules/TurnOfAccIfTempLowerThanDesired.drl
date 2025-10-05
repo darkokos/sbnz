@@ -1,0 +1,18 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.AirConditioner
+import com.ftn.sbnz.model.TemperatureReading
+import com.ftn.sbnz.model.SpaceHeater
+import com.ftn.sbnz.model.Radiator
+import com.ftn.sbnz.model.FloorHeater
+
+rule "turn off ac if the temperature is lower than desired"
+salience 100
+    when
+        $tempReading: TemperatureReading($temp: temperature)
+        $home: Home((desiredTemp == null) || ($temp <= desiredTemp))
+        $ac: AirConditioner()
+    then
+        modify($ac){setOn(false)}
+end

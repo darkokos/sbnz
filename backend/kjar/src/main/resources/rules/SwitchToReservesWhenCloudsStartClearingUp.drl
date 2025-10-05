@@ -1,0 +1,56 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.PowerSource
+import java.util.List
+import java.util.Collections
+import java.util.Comparator
+import com.ftn.sbnz.model.WeatherReading
+
+function boolean checkDecreasingTrend(List readings) {
+    if (readings.size() < 3) {
+        return false;
+    }
+
+    Collections.sort(readings, new Comparator() {
+        public int compare(Object o1, Object o2) {
+            WeatherReading r1 = (WeatherReading) o1;
+            WeatherReading r2 = (WeatherReading) o2;
+            return Long.compare(r1.getTimestamp(), r2.getTimestamp());
+        }
+    });
+
+    for (int i = 1; i < readings.size(); i++) {
+        WeatherReading prev = (WeatherReading) readings.get(i - 1);
+        WeatherReading curr = (WeatherReading) readings.get(i);
+
+        double diff = curr.getCloudCoverage() - prev.getCloudCoverage();
+        if (diff > 5) {
+            return false;
+        }
+    }
+
+    WeatherReading first = (WeatherReading) readings.get(0);
+    WeatherReading last = (WeatherReading) readings.get(readings.size() - 1);
+    double totalDrop = first.getCloudCoverage() - last.getCloudCoverage();
+
+    return totalDrop >= 30;
+}
+
+declare WeatherReading
+    @role(event)
+    @timestamp(timestamp)
+    timestamp: Long
+    cloudCoverage: Double
+end
+
+rule "switch to resrves when clouds start clearing up"
+when
+    $readings: List(size >= 3) from collect(
+        WeatherReading() over window:time(1h)
+    )
+    $home: Home()
+    eval(checkDecreasingTrend($readings))
+then
+    modify($home){setPowerSource(PowerSource.RESERVES)}
+end

@@ -15,11 +15,11 @@ Sa povećanom svesti o reperkusijama po prirodu koje potrošnja električne ener
 
 Dosadašnja softverska rešenja ovakvom problemu su se pokazala kao nedovoljna, zato što se fokusiraju na određeni podskup uređaja, bilo određenog proizvođača, ili namene. Ovo obično rezultuje u neoptimalnom upravljanju uređajima, jer softversko rešenje ima manjak informacija o ostatku sistema unutar domaćinstva.
 
-Naše rešenje bi bilo celovito, na nivou domaćinstva, i nudilo bi adaptibilno ponašanje na osnovu tarife potrošnje električne energije, vremenskih uslova, dostupnosti drugih izvora električne energije...
+Naše rešenje bi bilo celovito, na nivou domaćinstva, i nudilo bi adaptibilno ponašanje na osnovu trenutnih uslova u domaćinstvu, vremenskih uslova, dostupnosti drugih izvora električne energije...
 
 ### Pregled problema
 
-Problem koje naše softversko rešenje nastoji da reši je optimizacija potrošnje električne energije u okviru kućnog IoT sistema, u zavisnosti od uslova kao što su tarifa potrošnje električne energije, vremenski uslovi, prisustvo ljudi u domaćinstvu i kompleksnih uslova koji se stvaraju kao rezultat interakcije komponentata smart home sistema.
+Problem koje naše softversko rešenje nastoji da reši je optimizacija potrošnje električne energije u okviru kućnog IoT sistema, u zavisnosti od trenutnih uslova u domaćinstvu, vremenskih uslova, prisustva ljudi u domaćinstvu i kompleksnih uslova koji se stvaraju kao rezultat interakcije komponentata smart home sistema.
 
 Neka od postojećih konkurentih sistema i njihovi opisi su:
 
@@ -53,7 +53,6 @@ Spoljni podaci uneti u sistem su:
 - Trenutno stanje rada uređaja (uključen/isključen)
 - Status baterije uređaja koji se pune
 - Potrošnja uređaja
-- Tarifa potrošnje električne energije
 
 ### Izlazi iz sistema
 
@@ -61,7 +60,7 @@ Izlazi iz sistema bi bili:
 
 - Uključivanje/Isključivanje uređaja
 - Kontrola rada podesivih uređaja (intenzitet, boje...)
-- Kontrola vremena rada intenzivnih potrošača
+- Kontrola rada intenzivnih potrošača
 - Prebacivanje na rezervno napajanje
 
 ### Baza znanja
@@ -71,26 +70,26 @@ Baza znanja sistema se sastoji iz više skupova pravila.
 1. Pravila za optimizaciju potrošnje:
 
 ```
-when cena_energije == visoka_cena && prisustvo_ukucana == false
+when prisustvo_ukucana == false
 then
     smanji_grejanje && iskljuci_uređaje
 ```
 
 ```
-when cena_energije == visoka_cena && prisustvo_ukucana == true
+when prisustvo_ukucana == true
 then
-    blago_smanji_grejanje
+    pojacaj_grejanje
 ```
 
 ```
-when cena_energije == niska_cena && prisustvo_ukucana == false
+when profil_potrosnje == "Nocni" && prisustvo_ukucana == false
 then
 	// Ves masina, punjac za elektricni auto, itd...
 	ukljuci_vremenski_intenzivne_potrosace
 ```
 
 ```
-when cena_energije == niska_cena && prisustvo_ukucana == true
+when profil_potrosnje == "Balansirani" && prisustvo_ukucana == true
 then
 	ukljuci_sve_uredjaje && pojacaj_rad_uredjaja
 ```
@@ -134,20 +133,19 @@ then
 
 Inicijalno, baza znanja bi bila popunjena pravilima definisanim na osnovu ekspertskog znanja i najboljih praksi iz literature.
 
-Takođe, baza znanja može biti dopunjena, pravilima koja se dodatno generišu na osnovu spoljnih faktora kao što je unos korisnika (novih uređaja, novih profila potrošnje...)
+Takođe, baza znanja može biti dopunjena, pravilima koja se zasnivaju na novim uređajima, novim profilima potrošnje...
 
 #### Interakcije na osnovu znanja iz baze
 
-Sistem proaktivno primenjuje optimizacije na osnovu trenutnih podataka koje emituju senzori.
+Sistem proaktivno primenjuje optimizacije na osnovu trenutnih podataka koje unese korisnik.
 
 Takođe, sistem može reagovati na promene u okruženju, inicirane od strane korisnika, ili na promene koje se prirodno dešavaju, kao što je proticanje vremena.
 
 ### Primer rezonovanja
 
-Scenario je da je radni dan, nema nikoga u domaćinstvu i aktivna je visoka tarifa potrošnje električne energije. O domaćinstvu je poznato sledeće:
+Scenario je da je radni dan i nema nikoga u domaćinstvu. O domaćinstvu je poznato sledeće:
 
 - Temperatura - 22°C
-- Cena/kWh - 18din
 - Solarna proizvodnja - 3.2kW
 - Potrošnja - 1.8kW
 
@@ -156,7 +154,7 @@ Scenario je da je radni dan, nema nikoga u domaćinstvu i aktivna je visoka tari
 Korak 1:
 
 ```
-when prisustvo_ukucana == false && visoka_tarifa == true
+when prisustvo_ukucana == false
 then
 	aktiviraj_profil_stednje
 
@@ -189,7 +187,7 @@ then
 	odlozi_punjenje_vozila
 ```
 
-#### Primer Accumulate funkcije
+#### Primeri Accumulate funkcija i CEP-a (Complex Event Processing)
 
 Kako sistem raspolaže očitavanjima električne energije generisane od strane solarnih panela, može izračunati koliko energije je sačuvano na dan koristeći solarnu energiju.
 
@@ -206,22 +204,16 @@ then
 	System.out.println("Summed power generated is" + $total);
 ```
 
-#### Primer CEP-a (Complex Event Processing)
-
-CEP se u ovom sistemu može iskoristiti da bi se tokom naglih promena vremenskih uslova moglo zaključiti da će u budućnosti biti dostupna veća količina solarne energije, te na osnovu toga olakšati kriterijume potrošnje.
+CEP se takođe u ovom sistemu može iskoristiti da bi se tokom naglih promena vremenskih uslova moglo zaključiti da će u budućnosti biti dostupna veća količina solarne energije, te na osnovu toga olakšati kriterijume potrošnje.
 
 ```
 when
-	weatherReading1: WeatherReading(cloudCover > 80, $timestamp1: timestamp)
-	weatherReading2: WeatherReading(cloudCover < 60, $timestamp2: timestamp)
-	weatherReading3: WeatherReading(cloudCover < 30, $timestamp3: timestamp)
+	$weatherReadings: List(size >= 3) from collect(
+		WeatherReading() over window:time(1h)
+	)
 
-	// Neka se za naglu promenu računa promena koja se dogodi u toku 2 sata
-	$timestamp2 > $timestamp1 &&
-	$timestamp3 > $timestamp2 &&
-	$timestamp3 - $timestamp1 <= 2 * 60 * 60 * 1000
+	eval(checkDecreasingTrendInCloudCoverage($weatherReadings))
 then
-	prebaci_profil_potrosnje_na_balansirani
 	prebaci_potrosnju_na_rezerve
 ```
 

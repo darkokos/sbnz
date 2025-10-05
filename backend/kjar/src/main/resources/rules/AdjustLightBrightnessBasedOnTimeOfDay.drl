@@ -1,0 +1,16 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.Lights
+import com.ftn.sbnz.model.TimeReading
+
+rule "adjust light brightness based on time of day"
+salience 100
+    when
+        $home: Home(consumptionProfile != consumptionProfile.NIGHTLY)
+        $time: TimeReading($hour: hour)
+        $lights: Lights()
+        $brightness: Integer() from ($lights.suggestedBrightnessForTheHourOfTheDay($hour))
+    then
+        modify($lights){setBrightness($brightness)}
+end

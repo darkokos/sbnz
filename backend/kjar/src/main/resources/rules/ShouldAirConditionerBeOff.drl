@@ -1,0 +1,13 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.AirConditioner
+
+rule "should the air conditioner be off"
+    when
+        $home: Home((consumptionProfile != consumptionProfile.COMING_HOME && numberOfPresentResidents == 0)
+                    || consumptionProfile == consumptionProfile.ECO)
+        $ac: AirConditioner()
+    then
+        modify($ac){setOn(false)}
+end

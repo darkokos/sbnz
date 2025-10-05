@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.DishWasher
+
+rule "run dish washer in nightly mode"
+    when
+        $home: Home(consumptionProfile == consumptionProfile.NIGHTLY)
+        $dishWasher: DishWasher(loaded == true)
+    then
+        modify($dishWasher){setOn(true)}
+end

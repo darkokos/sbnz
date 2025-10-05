@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.Boiler
+
+rule "should the boiler be off"
+    when
+        $home: Home(consumptionProfile != consumptionProfile.NIGHTLY)
+        $boiler: Boiler()
+    then
+        modify($boiler){setOn(false)}
+end

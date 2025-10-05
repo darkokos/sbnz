@@ -1,0 +1,21 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.TemperatureReading
+import com.ftn.sbnz.model.SpaceHeater
+import com.ftn.sbnz.model.Radiator
+import com.ftn.sbnz.model.FloorHeater
+
+rule "turn off heating if the current temperature is higher than the desired"
+salience 100
+    when
+        $tempReading: TemperatureReading($temp: temperature)
+        $home: Home((desiredTemp == null) || ($temp >= desiredTemp))
+        $spaceHeater: SpaceHeater()
+        $radiator: Radiator()
+        $floorHeating: FloorHeater()
+    then
+        modify($spaceHeater){setOn(false)}
+        modify($radiator){setOn(false)}
+        modify($floorHeating){setOn(false)}
+end

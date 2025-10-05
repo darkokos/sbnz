@@ -1,0 +1,25 @@
+package rules
+
+import com.ftn.sbnz.model.SolarGeneratorReading
+import com.ftn.sbnz.model.SavedEnergy
+import java.util.List
+
+declare SolarGeneratorReading
+    @role(event)
+    @timestamp(timestamp)
+end
+
+rule "calculate solar savings over 24h window"
+    when
+        $solarReadings: List() from collect(
+            SolarGeneratorReading() over window:time(24h)
+        )
+        Number($totalPower: doubleValue) from accumulate(
+            SolarGeneratorReading($power: generatedPower) from $solarReadings,
+            sum($power)
+        )
+        $savedEnergy: SavedEnergy()
+    then
+        double energySaved = $totalPower;
+        modify($savedEnergy){setSavedEnergy(energySaved)}
+end
