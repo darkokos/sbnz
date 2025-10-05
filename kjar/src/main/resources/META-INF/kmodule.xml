@@ -1,0 +1,5 @@
+<kmodule  xmlns="http://jboss.org/kie/6.0.0/kmodule">
+    <kbase name="smartHomeRulesKB" packages="rules">
+        <ksession name="smartHomeRulesKS"/>
+    </kbase>
+</kmodule>
