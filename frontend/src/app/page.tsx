@@ -14,8 +14,12 @@ import RadiatorCard from "./components/RadiatorCard";
 import SolarGeneratorCard from "./components/SolarGeneratorCard";
 import SpaceHeaterCard from "./components/SpaceHeaterCard";
 import WashingMachineCard from "./components/WashingMachineCard";
-import WindowBlindsCard from "./components/WindowBlindsCard";
 import { Recommendations } from "./models/recommendations";
+import AirPurifierCard from "./components/AirPurifierCard";
+import AirQualityReadingCard from "./components/AirQualityReadingCard";
+import DishWasherCard from "./components/DishWasherCard";
+import DryerCard from "./components/DryerCard";
+import TimeReadingCard from "./components/TimeReadingCard";
 
 export default function Home() {
   const [recommendations, setRecommendations] = useState<Recommendations>({});
@@ -24,9 +28,13 @@ export default function Home() {
     <PageTemplate title="Home State">
       <Grid container>
         <Grid size={7}>
-          <Masonry columns={2}>
+          <Masonry columns={2} spacing={2}>
             <AirConditionerCard onResultHook={setRecommendations} />
+            <AirPurifierCard onResultHook={setRecommendations} />
+            <AirQualityReadingCard onResultHook={setRecommendations} />
             <BoilerCard onResultHook={setRecommendations} />
+            <DishWasherCard onResultHook={setRecommendations} />
+            <DryerCard onResultHook={setRecommendations} />
             <ElectricCarChargerCard onResultHook={setRecommendations} />
             <FloorHeaterCard onResultHook={setRecommendations} />
             <HomeCard onResultHook={setRecommendations} />
@@ -34,8 +42,8 @@ export default function Home() {
             <RadiatorCard onResultHook={setRecommendations} />
             <SolarGeneratorCard onResultHook={setRecommendations} />
             <SpaceHeaterCard onResultHook={setRecommendations} />
+            <TimeReadingCard onResultHook={setRecommendations} />
             <WashingMachineCard onResultHook={setRecommendations} />
-            <WindowBlindsCard onResultHook={setRecommendations} />
           </Masonry>
         </Grid>
         <Grid container size={1} justifyContent={"center"}>

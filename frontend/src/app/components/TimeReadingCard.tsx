@@ -3,31 +3,31 @@ import HomeStateCardTemplate from "./HomeStateCardTemplate";
 import { Recommendations } from "../models/recommendations";
 import { Box, Slider, Stack, Typography } from "@mui/material";
 
-export default function LightsCard({
+export default function TimeReadingCard({
   onResultHook,
 }: {
   onResultHook: Dispatch<SetStateAction<Recommendations>>;
 }) {
-  type LightsState = {
-    humidity: number;
+  type TimeReadingState = {
+    hour: number;
   };
 
-  const [state, setState] = useState<LightsState>({
-    humidity: 0,
+  const [state, setState] = useState<TimeReadingState>({
+    hour: 0,
   });
 
   const onSubmit = () => {};
 
   return (
-    <HomeStateCardTemplate title="Lights" onSubmit={onSubmit}>
+    <HomeStateCardTemplate title="Time Reading" onSubmit={onSubmit}>
       <Stack>
-        <Typography>Brightness [%]:</Typography>
+        <Typography>Hour of day:</Typography>
         <Box paddingX={2}>
           <Slider
-            value={state.humidity}
-            onChange={(_, value) => setState({ ...state, ["humidity"]: value })}
+            value={state.hour}
+            onChange={(_, value) => setState({ ...state, ["hour"]: value })}
             min={0}
-            max={100}
+            max={23}
             valueLabelDisplay="auto"
           />
         </Box>

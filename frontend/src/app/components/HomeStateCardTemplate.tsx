@@ -4,6 +4,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Stack,
 } from "@mui/material";
 import { MouseEventHandler, ReactNode } from "react";
 
@@ -19,7 +20,9 @@ export default function HomeStateCardTemplate({
   return (
     <Card>
       <CardHeader title={title} />
-      <CardContent>{children}</CardContent>
+      <CardContent>
+        <Stack gap={2}>{children}</Stack>
+      </CardContent>
       <CardActions style={{ justifyContent: "end" }}>
         <Button variant="contained" onClick={onSubmit}>
           Submit
