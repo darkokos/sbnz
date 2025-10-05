@@ -26,7 +26,6 @@ public class ReadingRepository {
     @Getter
     private TimeReading timeReading;
 
-    private final FactHandle weatherReadingHandle;
     @Getter
     private WeatherReading weatherReading;
 
@@ -40,13 +39,13 @@ public class ReadingRepository {
         airQualityReading = new AirQualityReading(50, 50);
         temperatureReading = new TemperatureReading(20.0);
         timeReading = new TimeReading(LocalTime.now().getHour());
-        weatherReading = new WeatherReading(20.0, System.currentTimeMillis());
+        weatherReading = new WeatherReading(100.0, System.currentTimeMillis());
         savedEnergy = new SavedEnergy(0);
 
         airQualityReadingHandle = this.kieSession.insert(airQualityReading);
         temperatureReadingHandle = this.kieSession.insert(temperatureReading);
         timeReadingHandle = this.kieSession.insert(timeReading);
-        weatherReadingHandle = this.kieSession.insert(weatherReading);
+        this.kieSession.insert(weatherReading);
         this.kieSession.insert(savedEnergy);
     }
 
@@ -73,9 +72,8 @@ public class ReadingRepository {
         this.kieSession.fireAllRules();
     }
 
-    public void setWeatherReading(WeatherReading reading) {
-        this.weatherReading = reading;
-        this.kieSession.update(weatherReadingHandle, reading);
+    public void insertWeatherReading(WeatherReading reading) {
+        this.kieSession.insert(reading);
         this.kieSession.fireAllRules();
     }
 }

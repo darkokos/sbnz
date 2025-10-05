@@ -85,9 +85,8 @@ public class ReadingService {
         if (readingDTO.getCloudCoverage() < 0 || readingDTO.getCloudCoverage() > 100) {
             throw new RestException(HttpStatus.BAD_REQUEST, "Cloud coverage has to be in range [0, 100]");
         }
-        WeatherReading weatherReading = this.readingRepository.getWeatherReading();
-        weatherReading.setCloudCoverage(readingDTO.getCloudCoverage());
-        this.readingRepository.setWeatherReading(weatherReading);
+        WeatherReading weatherReading = new WeatherReading(readingDTO.getCloudCoverage(), System.currentTimeMillis());
+        this.readingRepository.insertWeatherReading(weatherReading);
         return getRecommendation();
     }
 }
