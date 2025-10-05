@@ -19,7 +19,7 @@ public class HomeStateController {
 
     @GetMapping
     public ResponseEntity<RecommendationDto> getHomeState() {
-        return null;
+        return new ResponseEntity<>(homeStateService.getRecommendation(), HttpStatus.OK);
     }
 
     @PutMapping("/ac")
@@ -29,56 +29,61 @@ public class HomeStateController {
 
     @PutMapping("/boiler")
     public ResponseEntity<RecommendationDto> putBoilerState(@RequestBody BoilerDto boilerDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateBoilerState(boilerDto), HttpStatus.OK);
     }
 
     @PutMapping("/car-charger")
     public ResponseEntity<RecommendationDto> putElectricCarChargerState(@RequestBody ElectricCarChargerDto electricCarChargerDto) {
-        return null;
-    }
-
-    @PutMapping("/price-list")
-    public ResponseEntity<RecommendationDto> putElectricityPriceListState(@RequestBody ElectricityPriceListDto electricityPriceListDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateElectricCarChargerState(electricCarChargerDto), HttpStatus.OK);
     }
 
     @PutMapping("/floor-heater")
     public ResponseEntity<RecommendationDto> putFloorHeaterState(@RequestBody FloorHeaterDto floorHeaterDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateFloorHeaterState(floorHeaterDto), HttpStatus.OK);
     }
 
     @PutMapping("/home")
     public ResponseEntity<RecommendationDto> putHomeState(@RequestBody HomeDto homeDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateHomeState(homeDto), HttpStatus.OK);
     }
 
     @PutMapping("/lights")
     public ResponseEntity<RecommendationDto> putLightsState(@RequestBody LightsDto lightsDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateLightsState(lightsDto), HttpStatus.OK);
     }
 
     @PutMapping("/radiator")
     public ResponseEntity<RecommendationDto> putRadiatorState(@RequestBody RadiatorDto radiatorDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateRadiatorState(radiatorDto), HttpStatus.OK);
     }
 
     @PutMapping("/solar-generator")
     public ResponseEntity<RecommendationDto> putSolarGeneratorState(@RequestBody SolarGeneratorDto solarGeneratorDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateSolarGeneratorState(solarGeneratorDto), HttpStatus.OK);
     }
 
     @PutMapping("/space-heater")
     public ResponseEntity<RecommendationDto> putSpaceHeaterState(@RequestBody SpaceHeaterDto spaceHeaterDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateSpaceHeaterState(spaceHeaterDto), HttpStatus.OK);
     }
 
     @PutMapping("/washing-machine")
     public ResponseEntity<RecommendationDto> putWashingMachineState(@RequestBody WashingMachineDto washingMachineDto) {
-        return null;
+        return new ResponseEntity<>(homeStateService.updateWashingMachineState(washingMachineDto), HttpStatus.OK);
     }
 
-    @PutMapping("/window-blinds")
-    public ResponseEntity<RecommendationDto> putWindowBlindsState(@RequestBody WindowBlindsDto windowBlindsDto) {
-        return null;
+    @PutMapping("/air-purifier")
+    public ResponseEntity<RecommendationDto> putAirPurifierState(@RequestBody AirPurifierDTO airPurifierDTO) {
+        return new ResponseEntity<>(homeStateService.updateAirPurifierState(airPurifierDTO), HttpStatus.OK);
+    }
+
+    @PutMapping("/dish-washer")
+    public ResponseEntity<RecommendationDto> putDishWasherState(@RequestBody DishWasherDTO dishWasherDTO) {
+        return new ResponseEntity<>(homeStateService.updateDishWasherState(dishWasherDTO), HttpStatus.OK);
+    }
+
+    @PutMapping("/dryer")
+    public ResponseEntity<RecommendationDto> puyDryerState(@RequestBody DryerDTO dryerDTO) {
+        return new ResponseEntity<>(homeStateService.updateDryerState(dryerDTO), HttpStatus.OK);
     }
 }
