@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.WashingMachine
+
+rule "should the washing machine be off"
+    when
+        $home: Home(consumptionProfile != consumptionProfile.NIGHTLY)
+        $washingMachine: WashingMachine()
+    then
+        modify($washingMachine){setOn(false)}
+end

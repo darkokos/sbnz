@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.ElectricCarCharger
+
+rule "charge electric car in nightly mode"
+    when
+        $home: Home(consumptionProfile == consumptionProfile.NIGHTLY)
+        $charger: ElectricCarCharger()
+    then
+        modify($charger){setIsCharging(true)}
+end

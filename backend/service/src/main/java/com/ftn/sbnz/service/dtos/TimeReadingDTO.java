@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LightsDto {
-    // 0 - 100
-    private int brightness;
+public class TimeReadingDTO {
+    private int hour;
 }

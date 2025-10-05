@@ -1,0 +1,12 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.Lights
+
+rule "turn off the lights if the house is empty"
+    when
+        $home: Home(numberOfPresentResidents == 0)
+        $lights: Lights()
+    then
+        modify($lights){setBrightness(0)}
+end

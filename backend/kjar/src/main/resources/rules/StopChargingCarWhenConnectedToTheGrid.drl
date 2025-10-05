@@ -4,12 +4,10 @@ import com.ftn.sbnz.model.Home
 import com.ftn.sbnz.model.ElectricCarCharger
 import com.ftn.sbnz.model.PowerSource
 
-rule "when home is connected to the grid stop charging car"
+rule "when home is connected to the grid stop charging the car"
     when
-        $home: Home(powerSource == PowerSource.GRID)
+        $home: Home(powerSource == PowerSource.GRID || consumptionProfile != consumptionProfile.NIGHTLY)
         $car: ElectricCarCharger(isCharging == true)
     then
-        modify($car) {
-            setIsCharging(false)
-        }
+        modify($car) {setIsCharging(false)}
  end

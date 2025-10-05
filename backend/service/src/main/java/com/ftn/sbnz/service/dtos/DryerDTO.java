@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LightsDto {
-    // 0 - 100
-    private int brightness;
+public class DryerDTO {
+    private boolean isOn;
+    private boolean isLoaded;
 }

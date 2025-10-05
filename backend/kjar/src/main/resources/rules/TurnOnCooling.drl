@@ -1,0 +1,15 @@
+package rules
+
+import com.ftn.sbnz.model.Home
+import com.ftn.sbnz.model.AirConditioner
+import com.ftn.sbnz.model.TemperatureReading
+
+rule "turn on cooling if the temperature is 10% higher than the desired temperature"
+salience 100
+    when
+        $tempReading: TemperatureReading($temp: temperature)
+        $home: Home(desiredTemp != null, $temp >= desiredTemp * 1.1)
+        $ac: AirConditioner()
+    then
+        modify($ac){setOn(true)}
+end
