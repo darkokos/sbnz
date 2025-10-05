@@ -2,12 +2,15 @@ import { Dispatch, SetStateAction, useState } from "react";
 import HomeStateCardTemplate from "./HomeStateCardTemplate";
 import { Recommendations } from "../models/recommendations";
 import { Stack, Switch, TextField, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 export default function AirConditionerCard({
   onResultHook,
 }: {
   onResultHook: Dispatch<SetStateAction<Recommendations>>;
 }) {
+  const { enqueueSnackbar } = useSnackbar();
+
   type AirConditionerState = {
     isOn: boolean;
     targetTemperature: string;
@@ -19,19 +22,23 @@ export default function AirConditionerCard({
   });
 
   const onSubmit = async () => {
-    try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL ?? "", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(state),
-      });
-    } catch (error) {
-      console.log(error);
-      if (error) {
-      }
-    }
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? ""}/state/ac`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(state),
+    })
+      .then((response) => {
+        if (response.status > 300 || response.status < 200) {
+          response
+            .json()
+            .then((error) => enqueueSnackbar(error, { variant: "error" }));
+        } else {
+          response.json().then((data) => onResultHook(data));
+        }
+      })
+      .catch((error) => enqueueSnackbar(error, { variant: "error" }));
   };
 
   return (

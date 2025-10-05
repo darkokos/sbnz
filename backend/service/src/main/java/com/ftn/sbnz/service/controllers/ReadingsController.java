@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/reading")
-@RequestMapping
+@RestController
+@RequestMapping("/reading")
 public class ReadingsController {
     private final ReadingService readingService;
 

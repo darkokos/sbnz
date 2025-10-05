@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/state")
-@RequestMapping
+@RestController
+@RequestMapping("/state")
 public class HomeStateController {
     private final HomeStateService homeStateService;
 

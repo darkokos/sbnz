@@ -11,8 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class HomeDto {
     private PowerSource powerSource;
-    private Double currentConsumption;
-    private Integer numberOfPresentResidents;
+    private double currentConsumption;
+    private int numberOfPresentResidents;
     private ConsumptionProfile consumptionProfile;
-    private Double desiredTemp;
+    private double desiredTemp;
 }

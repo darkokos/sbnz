@@ -2,21 +2,42 @@ import { Dispatch, SetStateAction, useState } from "react";
 import HomeStateCardTemplate from "./HomeStateCardTemplate";
 import { Recommendations } from "../models/recommendations";
 import { Stack, Switch, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 export default function ElectricCarChargerCard({
   onResultHook,
 }: {
   onResultHook: Dispatch<SetStateAction<Recommendations>>;
 }) {
+  const { enqueueSnackbar } = useSnackbar();
+
   type ElectricCarChargerState = {
-    isOn: boolean;
+    isCharging: boolean;
   };
 
   const [state, setState] = useState<ElectricCarChargerState>({
-    isOn: false,
+    isCharging: false,
   });
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? ""}/state/car-charger`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(state.isCharging),
+    })
+      .then((response) => {
+        if (response.status > 300 || response.status < 200) {
+          response
+            .json()
+            .then((error) => enqueueSnackbar(error, { variant: "error" }));
+        } else {
+          response.json().then((data) => onResultHook(data));
+        }
+      })
+      .catch((error) => enqueueSnackbar(error, { variant: "error" }));
+  };
 
   return (
     <HomeStateCardTemplate title="Electric Car Charger" onSubmit={onSubmit}>
@@ -28,8 +49,10 @@ export default function ElectricCarChargerCard({
       >
         <Typography>Is charging:</Typography>
         <Switch
-          checked={state.isOn}
-          onChange={(e) => setState({ ...state, ["isOn"]: e.target.checked })}
+          checked={state.isCharging}
+          onChange={(e) =>
+            setState({ ...state, ["isCharging"]: e.target.checked })
+          }
         />
       </Stack>
     </HomeStateCardTemplate>

@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RadiatorDto {
     private boolean isOn;
+    private double targetTemperature;
 }
