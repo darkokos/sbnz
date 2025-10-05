@@ -7,6 +7,8 @@ import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
+
 @Repository
 public class ReadingRepository {
     private final KieSession kieSession;
@@ -34,7 +36,13 @@ public class ReadingRepository {
     @Autowired
     public ReadingRepository(KieSession kieSession) {
         this.kieSession = kieSession;
-        // TODO: init sane defaults
+
+        airQualityReading = new AirQualityReading(50, 50);
+        solarGeneratorReading = new SolarGeneratorReading(100);
+        temperatureReading = new TemperatureReading(20.0);
+        timeReading = new TimeReading(LocalTime.now().getHour());
+        weatherReading = new WeatherReading(20.0, System.currentTimeMillis());
+
         airQualityReadingHandle = this.kieSession.insert(airQualityReading);
         solarGeneratorReadingHandle = this.kieSession.insert(solarGeneratorReading);
         temperatureReadingHandle = this.kieSession.insert(temperatureReading);

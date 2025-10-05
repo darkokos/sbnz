@@ -69,7 +69,19 @@ public class HomeStateRepository {
     public HomeStateRepository(KieSession kieSession) {
         this.kieSession = kieSession;
 
-        // TODO: Init fields with sane defaults
+        airConditioner = new AirConditioner(false, 20.0);
+        boiler = new Boiler(false);
+        electricCarCharger = new ElectricCarCharger(false);
+        floorHeater = new FloorHeater(false, 20.0);
+        home = new Home(PowerSource.GRID, 400.0, 1, ConsumptionProfile.ECO, null);
+        lights = new Lights(0);
+        radiator = new Radiator(false);
+        solarGenerator = new SolarGenerator(150.0, 20.0);
+        spaceHeater = new SpaceHeater(false);
+        washingMachine = new WashingMachine(false, false);
+        airPurifier = new AirPurifier(false);
+        dishWasher = new DishWasher(false, false);
+        dryer = new Dryer(false, false);
 
         airConditionerHandle = this.kieSession.insert(airConditioner);
         boilerHandle = this.kieSession.insert(boiler);
