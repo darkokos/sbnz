@@ -1,0 +1,12 @@
+package rules;
+
+import com.ftn.sbnz.model.AirPurifier
+import com.ftn.sbnz.model.AirQualityReading
+
+rule "turn off air purifier when the air is good"
+    when
+        $purifier: AirPurifier()
+        $reading: AirQualityReading(humidity >= 30 && humidity <= 50 && airQuality >= 80)
+    then
+        modify($purifier){setOn(false)}
+end
