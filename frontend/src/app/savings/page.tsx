@@ -34,7 +34,7 @@ export default function Savings() {
             .json()
             .then((error) => enqueueSnackbar(error, { variant: "error" }));
         } else {
-          response.json().then((data) => setEnergySaved(data));
+          response.json().then((data) => setEnergySaved(data.savedEnergy));
         }
       })
       .catch((error) => enqueueSnackbar(error, { variant: "error" }));

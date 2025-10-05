@@ -1,5 +1,5 @@
 <kmodule  xmlns="http://jboss.org/kie/6.0.0/kmodule">
-    <kbase name="smartHomeRulesKB" packages="rules">
-        <ksession name="smartHomeRulesKS"/>
+    <kbase name="smartHomeRulesKB" eventProcessingMode="stream" packages="rules">
+        <ksession name="smartHomeRulesKS" clockType="realtime"/>
     </kbase>
 </kmodule>
