@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class WeatherReadingDTO {
-    private Double cloudCoverage;
-    private Long timestamp;
+    private double cloudCoverage;
 }
