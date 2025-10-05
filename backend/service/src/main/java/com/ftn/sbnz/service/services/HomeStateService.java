@@ -29,7 +29,7 @@ public class HomeStateService {
         recommendationDto.setLightBrightness(this.homeStateRepository.getLights().getBrightness());
         recommendationDto.setBoilerOn(this.homeStateRepository.getBoiler().isOn());
         recommendationDto.setDryerOn(this.homeStateRepository.getDryer().isOn());
-        recommendationDto.setAirPurifierOn(this.homeStateRepository.getAirConditioner().isOn());
+        recommendationDto.setAirPurifierOn(this.homeStateRepository.getAirPurifier().isOn());
         recommendationDto.setDishWasherOn(this.homeStateRepository.getDishWasher().isOn());
         return recommendationDto;
     }
@@ -147,6 +147,7 @@ public class HomeStateService {
     public RecommendationDto updateWashingMachineState(WashingMachineDto washingMachineDto) {
         WashingMachine washingMachine = this.homeStateRepository.getWashingMachine();
         washingMachine.setOn(washingMachineDto.isOn());
+        washingMachine.setLoaded(washingMachineDto.isLoaded());
         this.homeStateRepository.setWashingMachine(washingMachine);
         return getRecommendation();
     }
