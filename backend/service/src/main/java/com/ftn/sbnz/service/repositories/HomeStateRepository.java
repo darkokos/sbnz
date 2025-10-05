@@ -1,6 +1,7 @@
 package com.ftn.sbnz.service.repositories;
 
 import com.ftn.sbnz.model.*;
+import com.ftn.sbnz.service.dtos.RecommendationDto;
 import lombok.Getter;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
@@ -55,10 +56,6 @@ public class HomeStateRepository {
     @Getter
     private AirPurifier airPurifier;
 
-    private final FactHandle airQualityReadingHandle;
-    @Getter
-    private AirQualityReading airQualityReading;
-
     private final FactHandle dishWasherHandle;
     @Getter
     private DishWasher dishWasher;
@@ -67,9 +64,6 @@ public class HomeStateRepository {
     @Getter
     private Dryer dryer;
 
-    private final FactHandle timeReadingHandle;
-    @Getter
-    private TimeReading timeReading;
 
     @Autowired
     public HomeStateRepository(KieSession kieSession) {
@@ -88,10 +82,8 @@ public class HomeStateRepository {
         spaceHeaterHandle = this.kieSession.insert(spaceHeater);
         washingMachineHandle = this.kieSession.insert(washingMachine);
         airPurifierHandle = this.kieSession.insert(airPurifier);
-        airQualityReadingHandle = this.kieSession.insert(airQualityReading);
         dishWasherHandle = this.kieSession.insert(dishWasher);
         dryerHandle = this.kieSession.insert(dryer);
-        timeReadingHandle = this.kieSession.insert(timeReading);
     }
 
     public void setAirConditioner(AirConditioner airConditioner) {
@@ -160,12 +152,6 @@ public class HomeStateRepository {
         this.kieSession.fireAllRules();
     }
 
-    public void setAirQualityReading(AirQualityReading reading) {
-        this.airQualityReading = reading;
-        this.kieSession.update(airQualityReadingHandle, airQualityReading);
-        this.kieSession.fireAllRules();
-    }
-
     public void setDishWasher(DishWasher dishWasher) {
         this.dishWasher = dishWasher;
         this.kieSession.update(dishWasherHandle, dishWasher);
@@ -175,12 +161,6 @@ public class HomeStateRepository {
     public void setDryer(Dryer dryer) {
         this.dryer = dryer;
         this.kieSession.update(dryerHandle, dryer);
-        this.kieSession.fireAllRules();
-    }
-
-    public void setTimeReading(TimeReading reading) {
-        this.timeReading = reading;
-        this.kieSession.update(timeReadingHandle, reading);
         this.kieSession.fireAllRules();
     }
 }
