@@ -1,0 +1,7 @@
+package rules
+
+rule "calculate solar savings over 24h window"
+    when
+
+    then
+end

@@ -3,8 +3,11 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import PageTemplate from "../components/PageTemplate";
 import { ChangeEvent, useState } from "react";
+import { useSnackbar } from "notistack";
 
 export default function Savings() {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [generatedEnergy, setGeneratedEnergy] = useState("0");
   const [energySaved, setEnergySaved] = useState(0);
 
@@ -14,7 +17,28 @@ export default function Savings() {
     setGeneratedEnergy(e.target.value);
   };
 
-  const handleSubmitClicked = () => {};
+  const handleSubmitClicked = () => {
+    fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL ?? ""}/reading/solar-generator-reading`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ generatedPower: generatedEnergy }),
+      },
+    )
+      .then((response) => {
+        if (response.status > 300 || response.status < 200) {
+          response
+            .json()
+            .then((error) => enqueueSnackbar(error, { variant: "error" }));
+        } else {
+          response.json().then((data) => setEnergySaved(data));
+        }
+      })
+      .catch((error) => enqueueSnackbar(error, { variant: "error" }));
+  };
 
   return (
     <PageTemplate title="Solar Savings">

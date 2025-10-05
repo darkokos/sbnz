@@ -118,7 +118,8 @@ export default function Home() {
               {recommendations.airPurifierOn ? "Yes" : "No"}
             </Typography>
             <Typography>
-              Should dish washer be on: {recommendations.acOn ? "Yes" : "No"}
+              Should dish washer be on:{" "}
+              {recommendations.dishWasherOn ? "Yes" : "No"}
             </Typography>
           </Stack>
         </Grid>
